@@ -1,0 +1,30 @@
+{
+    "name": "duynnz/baomoi",
+    "autoload": {
+        "psr-4": {
+            "src\\": "src/",
+            "MyApp\\": "MyApp/"
+        }
+    },
+    "authors": [
+        {
+            "name": "duynndu",
+            "email": "duynnz2812@gmail.com"
+        }
+    ],
+    "scripts": {
+        "start": [
+            "Composer\\Config::disableProcessTimeout",
+            "php bin/comment-server.php"
+        ]
+    },
+    "require": {
+        "ext-pdo": "*",
+        "bramus/router": "^1.6",
+        "symfony/dotenv": "^6.4",
+        "firebase/php-jwt": "^6.10",
+        "cboden/ratchet": "^0.4.4",
+        "asm89/stack-cors": "^2.2",
+        "cocur/slugify": "^4.5"
+    }
+}
