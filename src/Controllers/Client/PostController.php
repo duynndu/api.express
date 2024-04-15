@@ -67,42 +67,4 @@ class PostController extends Controller
         echo json_encode($allPostByCategory);
     }
 
-
-    function addPost()
-    {
-        $_POST = json_decode(file_get_contents('php://input', true), true);
-
-        $this->postModel->insert([
-            'title' => $_POST['title'],
-            'summary' => $_POST['summary'],
-            'content' => $_POST['content'],
-            'category_id' => $_POST['category_id'],
-            'image' => $_POST['image'],
-            'user_id' => 1,
-            'slug' => $this->slugify->slugify($_POST['title'])
-        ]);
-    }
-
-    function editPost()
-    {
-        $_POST = json_decode(file_get_contents('php://input', true), true);
-        $this->postModel->update([
-            'title' => $_POST['title'],
-            'summary' => $_POST['summary'],
-            'content' => $_POST['content'],
-            'category_id' => $_POST['category_id'],
-            'image' => $_POST['image'],
-            'user_id' => 1,
-            'slug' => $this->slugify->slugify($_POST['title'])
-        ],$_POST['id']);
-    }
-
-    function deletePosts($ids)
-    {
-        $ids = explode(';', $ids);
-        foreach ($ids as $id) {
-            $this->postModel->delete($id);
-        }
-    }
-
 }

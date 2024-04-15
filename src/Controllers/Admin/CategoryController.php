@@ -6,48 +6,39 @@ use src\Models\CategoryModel;
 
 class CategoryController extends Controller
 {
-    private $categoryModel;
+    private CategoryModel $categoryModel;
     public function __construct()
     {
         parent::__construct();
         $this->categoryModel = new CategoryModel();
     }
 
-    public function index()
+    function addCategory()
     {
-        $this->renderViewAdmin('category.list', [
-            'title' => 'This is Dashboard',
-            'categories'=>$this->categoryModel->getAll()
+        $_POST = json_decode(file_get_contents('php://input', true), true);
+
+        $this->categoryModel->insert([
+            'name' => $_POST['name'],
+            'slug' => $this->slugify->slugify($_POST['name'])
         ]);
     }
-    public function add()
+
+    function editCategory()
     {
-        if($_SERVER['REQUEST_METHOD']=='POST'){
-            $this->categoryModel->insert([
-                'name'=>$_POST['name'],
-                'slug'=>$this->slugify->slugify($_POST['name'])
-            ]);
-            header('location: /admin/category');
+        $_POST = json_decode(file_get_contents('php://input', true), true);
+        $this->categoryModel->update([
+            'name' => $_POST['name'],
+            'slug' => $this->slugify->slugify($_POST['name'])
+        ],$_POST['id']);
+    }
+
+    function deleteCategories($ids)
+    {
+        $ids = explode(';', $ids);
+        foreach ($ids as $id) {
+            $this->categoryModel->delete($id);
         }
-        $this->renderViewAdmin('category.add');
     }
-    public function update($id=0)
-    {
-        if($_SERVER['REQUEST_METHOD']=='POST'){
-            $this->categoryModel->update([
-                'name'=>$_POST['name'],
-                'slug'=>$this->slugify->slugify($_POST['name'])
-            ],$id);
-            header('location: /admin/category');
-        }
-        $this->renderViewAdmin('category.edit',[
-            'category'=>$this->categoryModel->getById($id)
-        ]);
-    }
-    public function delete($id)
-    {
-        $this->categoryModel->delete($id);
-        header('location: '.DIR_PATH.'admin/categories');
-    }
+
 
 }

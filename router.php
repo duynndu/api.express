@@ -6,6 +6,7 @@ use src\Controllers\Admin\PostController as PostControllerAdmin;
 use src\Controllers\Client\CategoryController;
 use src\Controllers\Client\CommentController;
 use src\Controllers\Client\PostController;
+use src\Controllers\Admin\CategoryController as CategoryControllerAdmin;
 
 $router = new Bramus\Router\Router();
 
@@ -55,10 +56,16 @@ $router->mount('/admin', function () use ($router) {
     });
 
     $router->mount('/post', function () use ($router) {
-        $router->post('/addPost', PostController::class . '@addPost');
-        $router->put('/editPost', PostController::class . '@editPost');
-        $router->delete('/deletePosts/{id}', PostController::class . '@deletePosts');
+        $router->post('/addPost', PostControllerAdmin::class . '@addPost');
+        $router->put('/editPost', PostControllerAdmin::class . '@editPost');
+        $router->delete('/deletePosts/{id}', PostControllerAdmin::class . '@deletePosts');
         $router->get('/viewStatistics', PostControllerAdmin::class . '@viewStatistics');
+    });
+
+    $router->mount('/category', function () use ($router) {
+        $router->post('/addCategory', CategoryControllerAdmin::class . '@addCategory');
+        $router->put('/editCategory', CategoryControllerAdmin::class . '@editCategory');
+        $router->delete('/deleteCategories/{id}', CategoryControllerAdmin::class . '@deleteCategories');
     });
 });
 
